@@ -49,7 +49,7 @@
 
         .info-grid { display: grid; grid-template-columns: 1fr; gap: 15px; }
         .card { background: rgba(255,255,255,0.03); padding: 20px; border-radius: 12px; border-left: 3px solid var(--accent-gold); }
-        .card h4 { margin: 0 0 10px 0; font-size: 0.8rem; color: var(--accent-gold); letter-spacing: 1px; }
+        .card h4 { margin: 0 0 10px 0; font-size: 0.85rem; color: var(--accent-gold); letter-spacing: 1px; }
         .card p { margin: 0; font-size: 0.95rem; line-height: 1.7; color: var(--text-main); font-weight: 300; }
         .quote-card { background: linear-gradient(135deg, rgba(197,160,89,0.15) 0%, transparent 100%); border-left: 3px solid var(--bright-gold); }
     </style>
@@ -61,18 +61,17 @@
     <p class="subtitle">Workplace Energy Oracle</p>
 
     <div class="input-tip">
-        ⚡ <b>输入指引</b>：<br>
-        1. 此时的小时数 | 2. 此时的分钟数 | 3. 随机幸运数<br>
-        (仅支持大于0的正整数)
+        ⚡ <b>输入任意三个正整数</b><br>
+        感知此时此刻的职场共时性能量
     </div>
 
     <div class="input-section">
-        <div class="input-group"><label>观测维度 - 天 (Alpha)</label><input type="number" id="num1" min="1" placeholder="正整数"></div>
-        <div class="input-group"><label>观测维度 - 地 (Beta)</label><input type="number" id="num2" min="1" placeholder="正整数"></div>
-        <div class="input-group"><label>观测维度 - 人 (Gamma)</label><input type="number" id="num3" min="1" placeholder="正整数"></div>
+        <div class="input-group"><label>维度 I</label><input type="number" id="num1" min="1" placeholder="数字"></div>
+        <div class="input-group"><label>维度 II</label><input type="number" id="num2" min="1" placeholder="数字"></div>
+        <div class="input-group"><label>维度 III</label><input type="number" id="num3" min="1" placeholder="数字"></div>
     </div>
 
-    <button onclick="calculate()">读取今日职场能量</button>
+    <button onclick="calculate()">读取职场天机</button>
 
     <div id="result">
         <div class="gua-header">
@@ -89,14 +88,14 @@
 
 <script>
     const baseGua = [
-        { n: "坤", c: [0,0,0], k: "地", msg: "当下适合深耕基础，做那个最靠谱的执行者。稳住，便是赢。" },
-        { n: "乾", c: [1,1,1], k: "天", msg: "职场能量爆表！现在的你具备统领全局的潜力，大胆推进你的方案。" },
-        { n: "兑", c: [0,1,1], k: "泽", msg: "沟通胜过蛮干。今日适合商务谈判或跨部门协作，你的亲和力是杀手锏。" },
-        { n: "离", c: [1,0,1], k: "火", msg: "灵感迸发的时刻。你的才华正在被看见，适合进行创意产出或公开演讲。" },
-        { n: "震", c: [0,0,1], k: "雷", msg: "变动即是机遇。不要害怕突如其来的调整，雷厉风行才是你的本色。" },
-        { n: "巽", c: [1,1,0], k: "风", msg: "借力打力，顺势而为。像风一样敏锐，在复杂的职场关系中寻找最优解。" },
-        { n: "坎", c: [0,1,0], k: "水", msg: "处变不惊。当前可能面临一些小坎坷，保持诚信与冷静，水滴石穿。" },
-        { n: "艮", c: [1,0,0], k: "山", msg: "知止而不殆。有些事急不得，停下来复盘和积蓄力量，比盲目冲锋更重要。" }
+        { n: "坤", c: [0,0,0], k: "地", kw: "包容/承载", pit: "警惕过度妥协导致进度拖慢。", encouragement: "稳扎稳打。今日你适合担任团队的定海神针，默默耕耘必有大赏。" },
+        { n: "乾", c: [1,1,1], k: "天", kw: "进取/主导", pit: "防止表现过激或盲目自信导致的决策失误。", encouragement: "潜龙在渊，飞龙在天。大胆展示你的方案，现在是你的高光时刻。" },
+        { n: "兑", c: [0,1,1], k: "泽", kw: "悦纳/沟通", pit: "注意口角是非，避免非正式渠道的八卦影响心态。", encouragement: "沟通就是生产力。今日你的建议极具说服力，适合进行汇报与谈判。" },
+        { n: "离", c: [1,0,1], k: "火", kw: "文明/热忱", pit: "当心工作热情消耗过快，导致后期执行力疲软。", encouragement: "灵感如星火燎原。适合处理设计、创意或品牌相关任务，让才华被看见。" },
+        { n: "震", c: [0,0,1], k: "雷", kw: "震动/生机", pit: "避免在情绪激动时回复邮件或作重大承诺。", encouragement: "变动中蕴含新生。突如其来的调整可能是你升职加薪的跳板。" },
+        { n: "巽", c: [1,1,0], k: "风", kw: "顺应/商业", pit: "注意项目执行中的细节缺失，别被表面的顺利迷惑。", encouragement: "顺势而为，无孔不入。像风一样灵活，你能在复杂的职场缝隙中找到突破点。" },
+        { n: "坎", c: [0,1,0], k: "水", kw: "陷险/智慧", pit: "不要试图走捷径，任何侥幸心理都会变成深坑。", encouragement: "流水不争先，争的是滔滔不绝。保持诚信与冷静，你将度过这轮考验。" },
+        { n: "艮", c: [1,0,0], k: "山", kw: "静止/止步", pit: "切记强行推进已停滞的项目，只会徒增损耗。", encouragement: "知止而后有定。适当的停歇是为了看清前路，今日适合做复盘和深度规划。" }
     ];
 
     const names64 = [
@@ -122,7 +121,7 @@
     function calculate() {
         const v = [parseInt(document.getElementById('num1').value), parseInt(document.getElementById('num2').value), parseInt(document.getElementById('num3').value)];
         if(v.some(isNaN) || v.some(n => n <= 0)) {
-            alert("⚠️ 请输入大于零的正整数，让我们更准确地感知能量。"); return;
+            alert("⚠️ 请输入大于零的正整数。"); return;
         }
 
         const s = v[0] % 8, x = v[1] % 8, m = (v[2] % 6) || 6;
@@ -130,16 +129,34 @@
         bian[m-1] = bian[m-1] ? 0 : 1;
 
         document.getElementById('result').style.display = 'block';
-        document.getElementById('out-name').innerText = `本时段状态：${name}`;
+        document.getElementById('out-name').innerText = `职场卦象：${name}`;
         document.getElementById('out-code').innerText = `${baseGua[s].n}上 ${baseGua[x].n}下 · 第 ${m} 爻动`;
         draw(ben, 'ben-bars'); draw(bian, 'bian-bars');
 
         const sg = baseGua[s], xg = baseGua[x];
-        // 动态逻辑生成
+        
+        // --- 核心个性化逻辑开始 ---
+        let pitText = "", encouragementText = "";
+
+        // 根据上下卦的关系生成避坑指南
+        if (s === x) {
+            pitText = `双重“${sg.k}”能量叠加。容易陷入极端：${sg.pit.replace('。', '')}，且容易听不进同事劝告。`;
+        } else {
+            pitText = `“${sg.k}”外显，“${xg.k}”内含。你需要注意：${sg.pit} 同时小心${xg.pit}`;
+        }
+
+        // 根据动爻位置生成变动提醒
+        const changeDesc = m > 3 ? "当前变数来自【外部/上级】" : "当前变数来自【内部/基础】";
+        pitText += ` <br><b>关键：</b>${changeDesc}，请重点关注。`;
+
+        // 生成寄语：结合卦名与基础属性
+        encouragementText = `【${name}】状态：${sg.encouragement} 记住，今日最核心的关键词是“<b>${sg.kw}</b>”。`;
+        // --- 核心个性化逻辑结束 ---
+
         const content = `
-            <div class="card"><h4>项目能量场</h4><p>当前处于“${sg.k}${xg.k}”平衡点。${sg.n === xg.n ? '纯粹的能量正在聚集，注意过犹不及。' : '异质能量正在碰撞，跨界合作将产生奇效。'}</p></div>
-            <div class="card"><h4>避坑指南</h4><p>${m > 3 ? '外部环境（客户、上级）正发生微妙变化，请保持手机畅通，随时准备调整。' : '内部细节（代码、文档、流程）可能存在隐患，建议自检一遍。'}</p></div>
-            <div class="card quote-card"><h4>鼓励师专属寄语</h4><p>“${name}”告诉我们：<b>${baseGua[s].msg}</b> 记住，职场不只是一场短跑，保持你的节奏。</p></div>
+            <div class="card"><h4>职场意象</h4><p>当前处于“${sg.k}${xg.k}”能量场。这意味着你的外部环境表现为“${sg.kw}”，而你的核心驱动力是“${xg.kw}”。</p></div>
+            <div class="card"><h4>避坑指南</h4><p>${pitText}</p></div>
+            <div class="card quote-card"><h4>鼓励师专属寄语</h4><p>${encouragementText}</p></div>
         `;
         document.getElementById('info-content').innerHTML = content;
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
